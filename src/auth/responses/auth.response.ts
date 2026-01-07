@@ -3,16 +3,16 @@ import { ObjectType, Field } from "@nestjs/graphql";
 @ObjectType()
 export class AuthResponse {
   @Field(() => String)
-  _id: String;
+  _id: string;
 
   @Field(() => String)
-  name: String;
+  name: string;
 
   @Field(() => String)
-  email: String;
+  email: string;
 
   @Field(() => String, { nullable: true })
-  role?: String;
+  role?: string;
 
   @Field(() => Date)
   createdAt: Date;

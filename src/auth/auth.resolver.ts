@@ -12,6 +12,7 @@ import { AuthResponse } from "./responses/auth.response";
 import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { CurrentUser } from "../decorators/current-user.decorator";
+import { User, UserRole } from "./schemas/auth.schema";
 
 @Resolver(() => AuthResponse)
 export class AuthResolver {
@@ -20,17 +21,17 @@ export class AuthResolver {
   @Mutation(() => AuthResponse)
   async register(
     @Args('registerInput') registerInput: RegisterInput,
-  ): Promise<AuthResponse> {
+  ): Promise<Omit<User, 'password'>> {
     const user = await this.authService.register(registerInput);
-    return user as AuthResponse;
+    return user;
   }
 
   @Mutation(() => AuthResponse)
   async login(
     @Args('loginInput') loginInput: LoginInput,
-  ): Promise<AuthResponse> {
+  ): Promise<Omit<User, 'password'>> {
     const user = await this.authService.login(loginInput);
-    return user as AuthResponse;
+    return user;
   }
 
   @Mutation(() => AuthResponse)
@@ -40,29 +41,31 @@ export class AuthResolver {
     @Args('email', { nullable: true }) email?: string,
     @Args('role', { nullable: true }) role?: string,
     @CurrentUser() currentUser?: any,
-  ): Promise<AuthResponse> {
+  ): Promise<Omit<User, 'password'>> {
     const userId = currentUser._id || currentUser.userId;
-    const updateData = { name, email, role };
+    const updateData: { name?: string; email?: string; role?: UserRole } = {
+      name,
+      email,
+      role: role ? (role as UserRole) : undefined,
+    };
     const user = await this.authService.updateProfile(userId, updateData);
-    return user as AuthResponse;
+    return user;
   }
 
   @Query(() => [AuthResponse])
   @UseGuards(JwtAuthGuard)
   async findUsersByName(
     @Args('name') name: string,
-  ): Promise<AuthResponse[]> {
+  ): Promise<Omit<User, 'password'>[]> {
     const users = await this.authService.findByName(name);
-    return users as AuthResponse[];
+    return users;
   }
 
   @Query(() => AuthResponse)
   @UseGuards(JwtAuthGuard)
   async getProfile(
     @CurrentUser() currentUser: any,
-  ): Promise<AuthResponse> {
-    // Assuming you'll add a getProfile method to your AuthService
-    // For now, returning the currentUser from the context
-    return currentUser as AuthResponse;
+  ): Promise<Omit<User, 'password'>> {
+    return currentUser;
   }
 }
