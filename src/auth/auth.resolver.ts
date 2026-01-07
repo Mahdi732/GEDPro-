@@ -21,17 +21,54 @@ export class AuthResolver {
   @Mutation(() => AuthResponse)
   async register(
     @Args('registerInput') registerInput: RegisterInput,
-  ): Promise<Omit<User, 'password'>> {
+    @Context() ctx?: any,
+  ): Promise<AuthResponse> {
     const user = await this.authService.register(registerInput);
-    return user;
+    const accessToken = this.authService.createAccessToken(user);
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: (Number(process.env.JWT_COOKIE_MAX_AGE) || 3600) * 1000,
+      path: '/',
+    };
+
+    try {
+      ctx?.res?.cookie?.('accessToken', accessToken, cookieOptions);
+    } catch (e) {
+      // best-effort: set header if `res.cookie` not available
+      const maxAgeSec = cookieOptions.maxAge ? cookieOptions.maxAge / 1000 : 3600;
+      ctx?.res?.setHeader?.('Set-Cookie', `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${maxAgeSec}; SameSite=Lax${cookieOptions.secure ? '; Secure' : ''}`);
+    }
+
+    return user as AuthResponse;
   }
 
   @Mutation(() => AuthResponse)
   async login(
     @Args('loginInput') loginInput: LoginInput,
-  ): Promise<Omit<User, 'password'>> {
+    @Context() ctx?: any,
+  ): Promise<AuthResponse> {
     const user = await this.authService.login(loginInput);
-    return user;
+    const accessToken = this.authService.createAccessToken(user);
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: (Number(process.env.JWT_COOKIE_MAX_AGE) || 3600) * 1000,
+      path: '/',
+    };
+
+    try {
+      ctx?.res?.cookie?.('accessToken', accessToken, cookieOptions);
+    } catch (e) {
+      const maxAgeSec = cookieOptions.maxAge ? cookieOptions.maxAge / 1000 : 3600;
+      ctx?.res?.setHeader?.('Set-Cookie', `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${maxAgeSec}; SameSite=Lax${cookieOptions.secure ? '; Secure' : ''}`);
+    }
+
+    return user as AuthResponse;
   }
 
   @Mutation(() => AuthResponse)

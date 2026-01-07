@@ -14,9 +14,9 @@ export class AuthResponse {
   @Field(() => String, { nullable: true })
   role?: string;
 
-  @Field(() => Date)
-  createdAt: Date;
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date;
 
-  @Field(() => Date)
-  updatedAt: Date;
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
 }

@@ -56,6 +56,11 @@ export class User {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  // Timestamps added by Mongoose when `timestamps: true` is enabled on the schema.
+  // Declare them here so TypeScript knows these properties may exist on `User` objects.
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const userSchema = SchemaFactory.createForClass(User)

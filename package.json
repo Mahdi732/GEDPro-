@@ -40,6 +40,12 @@
     "rxjs": "^7.8.1",
     "uuid": "^13.0.0"
   },
+  "optionalDependencies": {
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",

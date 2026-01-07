@@ -1,9 +1,9 @@
-import { 
-  BadRequestException, 
-  Injectable, 
+import {
+  BadRequestException,
+  Injectable,
   NotFoundException,
   UnauthorizedException,
-  ConflictException 
+  ConflictException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -11,14 +11,16 @@ import * as bcrypt from "bcrypt";
 import { UserDocument, User, UserRole } from "./schemas/auth.schema";
 import { RegisterInput } from "./dto/register.input";
 import { LoginInput } from "./dto/login.input";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
   private readonly SALT_ROUNDS = 10;
   
   constructor(
-    @InjectModel(User.name) 
-    private userModel: Model<UserDocument>
+    @InjectModel(User.name)
+    private userModel: Model<UserDocument>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(registerInput: RegisterInput): Promise<Omit<User, 'password'>> {
@@ -71,6 +73,11 @@ export class AuthService {
     const { password, ...userWithoutPassword } = userObject;
 
     return userWithoutPassword;
+  }
+
+  createAccessToken(user: Omit<User, 'password'>) {
+    const payload = { sub: user._id, role: user.role };
+    return this.jwtService.sign(payload);
   }
 
   async updateProfile(
