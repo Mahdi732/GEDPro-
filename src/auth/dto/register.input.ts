@@ -40,4 +40,9 @@ export class RegisterInput {
   @IsOptional()
   @IsString({ message: "Role must be a string" })
   role?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString({ message: "Organization must be a string" })
+  organizationId?: string;
 }
