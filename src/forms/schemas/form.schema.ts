@@ -12,6 +12,13 @@ export enum FieldType {
   DATE = "DATE",
 }
 
+export enum FormPurpose {
+  RECRUITMENT = "RECRUITMENT",
+  ONBOARDING = "ONBOARDING",
+  EVALUATION = "EVALUATION",
+  GENERIC = "GENERIC",
+}
+
 @Schema()
 export class FormField {
   @Prop({ required: true })
@@ -45,6 +52,15 @@ export class Form {
 
   @Prop()
   description?: string;
+
+  @Prop({ type: String, enum: FormPurpose, default: FormPurpose.GENERIC })
+  purpose: FormPurpose;
+
+  @Prop()
+  linkedOfferId?: string;
+
+  @Prop()
+  processKey?: string;
 
   @Prop({ type: [FormFieldSchema], default: [] })
   fields: FormField[];
