@@ -26,44 +26,44 @@ const { log } = require("console");
 
 
 //////////////////////////////
-// function coin(arr, amount) {
-//     arr.sort((a, b) => b - a);
+function coin(arr, amount) {
+    arr.sort((a, b) => b - a);
 
-//     let bestCount = 0;
+    let bestCount = 0;
 
-//     for (let i = 0; i < arr.length; i++) {
-//         let value = 0;
-//         let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+        let value = 0;
+        let count = 0;
 
-//         if (arr[i] > amount) continue;
-//         console.log(arr[i])
-//         let x = 1;
-//         while (arr[i] * x <= amount) {
-//             x++;
-//         }
-//         x--; 
+        if (arr[i] > amount) continue;
+        console.log(arr[i])
+        let x = 1;
+        while (arr[i] * x <= amount) {
+            x++;
+        }
+        x--; 
 
-//         value = arr[i] * x;
-//         count = x;
+        value = arr[i] * x;
+        count = x;
 
-//         let remaining = amount - value;
+        let remaining = amount - value;
 
-//         for (let j = i + 1; j < arr.length && remaining > 0; j++) {
-//             while (arr[j] <= remaining) {
-//                 remaining -= arr[j];
-//                 count++;
-//             }
-//         }
+        for (let j = i + 1; j < arr.length && remaining > 0; j++) {
+            while (arr[j] <= remaining) {
+                remaining -= arr[j];
+                count++;
+            }
+        }
 
-//         if (remaining === 0) {
-//             bestCount = Math.min(bestCount, count);
-//         }
-//     }
+        if (remaining === 0) {
+            bestCount = Math.min(bestCount, count);
+        }
+    }
 
-//     return bestCount === 0 ? -1 : bestCount;
-// }
+    return bestCount === 0 ? -1 : bestCount;
+}
 
-// console.log(coin([4,6,19], 9))
+console.log(coin([4,6,19], 9))
 
 
 var coinChange = function (arr, amount) {
