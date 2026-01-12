@@ -42,6 +42,7 @@ export class AuthService {
       email: registerInput.email,
       password: hashedPassword,
       role: registerInput.role || UserRole.USER,
+      organizationId: registerInput.organizationId,
     });
 
     const savedUser = await newUser.save();
@@ -76,13 +77,13 @@ export class AuthService {
   }
 
   createAccessToken(user: Omit<User, 'password'>) {
-    const payload = { sub: user._id, role: user.role };
+    const payload = { sub: user._id, role: user.role, organizationId: (user as any).organizationId };
     return this.jwtService.sign(payload);
   }
 
   async updateProfile(
     userId: string, 
-    updateData: { name?: string; email?: string; role?: UserRole }
+    updateData: { name?: string; email?: string; role?: UserRole; organizationId?: string }
   ): Promise<Omit<User, 'password'>> {
     if (updateData.email) {
       const existingUser = await this.userModel.findOne({ 
