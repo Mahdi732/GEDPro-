@@ -30,6 +30,10 @@ export class InterviewsService {
   async schedule(input: ScheduleInterviewInput, userId?: string): Promise<Interview> {
     const candidate = await this.ensureCandidate(input.candidateId);
 
+    if (input.organizationId && candidate.organizationId && input.organizationId !== candidate.organizationId) {
+      throw new BadRequestException('Organization mismatch between interview and candidate');
+    }
+
     const interview = new this.interviewModel({
       ...input,
       organizationId: input.organizationId || candidate.organizationId,
