@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
-import { FieldType } from "../schemas/form.schema";
+import { FieldType, FormPurpose } from "../schemas/form.schema";
 
 @ObjectType()
 export class FormFieldResponse {
@@ -32,6 +32,15 @@ export class FormResponseType {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => String, { nullable: true })
+  purpose?: FormPurpose;
+
+  @Field({ nullable: true })
+  linkedOfferId?: string;
+
+  @Field({ nullable: true })
+  processKey?: string;
 
   @Field(() => [FormFieldResponse])
   fields: FormFieldResponse[];
