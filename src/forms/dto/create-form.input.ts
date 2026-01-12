@@ -1,5 +1,5 @@
 import { InputType, Field, Int } from "@nestjs/graphql";
-import { FieldType } from "../schemas/form.schema";
+import { FieldType, FormPurpose } from "../schemas/form.schema";
 
 @InputType()
 export class FormFieldInput {
@@ -29,6 +29,15 @@ export class CreateFormInput {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => String, { nullable: true })
+  purpose?: FormPurpose;
+
+  @Field({ nullable: true })
+  linkedOfferId?: string;
+
+  @Field({ nullable: true })
+  processKey?: string;
 
   @Field(() => [FormFieldInput])
   fields: FormFieldInput[];
