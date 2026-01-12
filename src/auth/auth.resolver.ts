@@ -77,13 +77,15 @@ export class AuthResolver {
     @Args('name', { nullable: true }) name?: string,
     @Args('email', { nullable: true }) email?: string,
     @Args('role', { nullable: true }) role?: string,
+    @Args('organizationId', { nullable: true }) organizationId?: string,
     @CurrentUser() currentUser?: any,
   ): Promise<Omit<User, 'password'>> {
     const userId = currentUser._id || currentUser.userId;
-    const updateData: { name?: string; email?: string; role?: UserRole } = {
+    const updateData: { name?: string; email?: string; role?: UserRole; organizationId?: string } = {
       name,
       email,
       role: role ? (role as UserRole) : undefined,
+      organizationId,
     };
     const user = await this.authService.updateProfile(userId, updateData);
     return user;
