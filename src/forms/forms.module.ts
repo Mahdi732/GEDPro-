@@ -4,6 +4,7 @@ import { FormsService } from "./forms.service";
 import { FormsResolver } from "./forms.resolver";
 import { Form, formSchema } from "./schemas/form.schema";
 import { FormResponse, formResponseSchema } from "./schemas/response.schema";
+import { RolesGuard } from "../guards/roles.guard";
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { FormResponse, formResponseSchema } from "./schemas/response.schema";
       { name: FormResponse.name, schema: formResponseSchema },
     ]),
   ],
-  providers: [FormsResolver, FormsService],
+  providers: [FormsResolver, FormsService, RolesGuard],
   exports: [FormsService],
 })
 export class FormsModule {}
