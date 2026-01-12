@@ -12,6 +12,9 @@ export class FormSubmissionResponse {
   data: string; // JSON string of submitted values
 
   @Field({ nullable: true })
+  organizationId?: string;
+
+  @Field({ nullable: true })
   submitterId?: string;
 
   @Field({ nullable: true })
