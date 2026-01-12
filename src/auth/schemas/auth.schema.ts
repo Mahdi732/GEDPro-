@@ -51,6 +51,9 @@ export class User {
   })
   role: UserRole;
 
+  @Prop({ trim: true })
+  organizationId?: string;
+
   @Prop({ default: false })
   isEmailVerified: boolean;
 
