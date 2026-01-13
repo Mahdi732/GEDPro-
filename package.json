@@ -20,12 +20,17 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/apollo": "^13.2.3",
+    "@as-integrations/express": "file:vendor/as-integrations/express",
+    "@as-integrations/express5": "file:vendor/as-integrations/express5",
     "@nestjs/class-transformer": "^0.4.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/graphql": "^13.2.3",
+    "@nestjs/jwt": "^11.0.2",
     "@nestjs/mongoose": "^11.0.4",
+    "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^6.0.0",
@@ -36,15 +41,11 @@
     "graphql-tools": "^9.0.25",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.2",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "uuid": "^13.0.0"
-  },
-  "optionalDependencies": {
-    "@nestjs/jwt": "^11.0.2",
-    "@nestjs/passport": "^11.0.5",
-    "passport": "^0.6.0",
-    "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
