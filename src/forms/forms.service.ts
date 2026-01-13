@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { FieldType, Form, FormDocument, FormPurpose } from "./schemas/form.schema";
+import { FieldType, Form, FormDocument, FormField, FormPurpose } from "./schemas/form.schema";
 import { FormResponse, FormResponseDocument } from "./schemas/response.schema";
 import { CreateFormInput } from "./dto/create-form.input";
 
@@ -134,7 +134,14 @@ export class FormsService {
     const payload: Partial<Form> = {
       ...input,
       purpose: input.purpose || FormPurpose.GENERIC,
-      fields: [...input.fields].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+      fields: [...input.fields]
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map<FormField>((f) => ({
+          ...f,
+          required: f.required === true,
+          options: f.options ?? [],
+          order: f.order ?? 0,
+        })),
     };
 
     const created = new this.formModel(payload);
